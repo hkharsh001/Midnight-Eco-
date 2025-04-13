@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q0EQVB0BTT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -10,14 +10,19 @@
     gtag('config', 'G-Q0EQVB0BTT');
   </script>
 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Download high-quality wallpaper packs like Spiderman, Black Panther & more.">
   <meta name="keywords" content="wallpapers, spiderman, superhero wallpapers, hd wallpapers, mobile backgrounds">
   <meta name="robots" content="index, follow">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wallpaper Packs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
   <style>
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -32,40 +37,18 @@
       overflow-x: hidden;
     }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 15px 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-weight: 500;
-    }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
-    }
-
     .container {
       text-align: center;
       max-width: 1200px;
       width: 100%;
+      animation: fadeInUp 1s ease-out forwards;
     }
 
     h1 {
       font-size: 2.5rem;
       margin-bottom: 40px;
       text-shadow: 2px 2px 8px #000;
+      animation: fadeInUp 1.2s ease-out forwards;
     }
 
     .wallpapers {
@@ -85,7 +68,11 @@
       color: #fff;
       animation: fadeInUp 1.5s ease forwards;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
+      opacity: 0;
     }
+
+    .card:nth-child(1) { animation-delay: 0.3s; }
+    .card:nth-child(2) { animation-delay: 0.6s; }
 
     .card img {
       width: 100%;
@@ -105,49 +92,27 @@
       transform: translateY(-8px) scale(1.03);
       box-shadow: 0 12px 24px rgba(0,0,0,0.5);
     }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
   </style>
 </head>
 <body>
-
-  <!-- Navigation Bar -->
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="wallpapers.html">Wallpapers</a>
-    <a href="terms.html">Terms</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-
   <div class="container">
     <h1>Wallpaper Packs</h1>
     <div class="wallpapers">
       <!-- Spiderman Pack -->
       <a href="https://drive.google.com/drive/folders/16Ii5Oqs3uuvKyHJEynvOinBAhg52hBOT" target="_blank" class="card">
-        <img loading="lazy" src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/20250412_210014-COLLAGE.jpg" alt="Spiderman Pack" />
+        <img loading="lazy" src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/20250412_210014-COLLAGE.jpg" alt="Spiderman Pack">
         <p>Spiderman Pack</p>
       </a>
 
       <!-- Predator Pack -->
       <a href="https://drive.google.com/drive/folders/1jf8wvghMTaGmELSaknGcrK1B6aBmS_pp" target="_blank" class="card">
-        <img loading="lazy" src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/1000038072.webp" alt="Predator Pack" />
+        <img loading="lazy" src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/1000038072.webp" alt="Predator Pack">
         <p>Predator Pack</p>
       </a>
-
-      <!-- Add more packs here -->
     </div>
   </div>
 
+  <!-- AdQuake Ads -->
   <script async src="https://script.adquake.com/js/adquake.js" adquake-key="fvHmqgjPf0SnUpNN2a9G8w=="></script>
 </body>
 </html>
