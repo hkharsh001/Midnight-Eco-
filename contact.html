@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Contact Us - Midnight Eco</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101010;
+      color: #f1f1f1;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 { color: #fff; }
+    form {
+      max-width: 400px;
+      margin-top: 20px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #222;
+      color: #fff;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #4fc3f7;
+      color: #000;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contact Us</h1>
+  <p>If you have questions, feedback, or business inquiries, reach out using the form below:</p>
+
+  <form action="mailto:hkharsh009@gmail.com" method="POST" enctype="text/plain">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" rows="6" placeholder="Your Message..." required></textarea>
+    <button type="submit">Send</button>
+  </form>
+
+  <p>Or email us directly: <a href="mailto:hkharsh009@gmail.com">hkharsh009@gmail.com</a></p>
+</body>
+</html>
