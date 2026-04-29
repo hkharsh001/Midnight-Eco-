@@ -187,6 +187,13 @@
   <footer>
     &copy; 2025 Midnight Eco. All rights reserved. | <a href="/privacy.html" style="color:#ccc;">Privacy Policy</a> | <a href="/contact.html" style="color:#ccc;">Contact</a>
   </footer>
+<button id="themeToggle" style="position:fixed;top:20px;right:20px;">🌓</button>
 
+<script>
+  const toggle = document.getElementById('themeToggle');
+  toggle.onclick = () => {
+    document.body.classList.toggle('light-mode');
+  };
+</script>
 </body>
 </html>
