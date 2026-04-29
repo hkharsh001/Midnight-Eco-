@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Midnight Eco — Explore</title>
+<title>Midnight — Explore Wallpapers</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -13,30 +12,13 @@
 /* ===== THEME ===== */
 :root {
   --bg: #0A0A0A;
-  --card: #111;
   --text: #fff;
   --muted: #a1a1aa;
   --border: #1f1f1f;
-  --accent: #3b82f6;
 }
 
-.light {
-  --bg: #ffffff;
-  --card: #f8f9fa;
-  --text: #111;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-}
-
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* BODY */
 body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -49,66 +31,27 @@ body {
   z-index: 100;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
+  padding: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
 }
 
 .logo {
   font-weight: 600;
-  font-size: 16px;
 }
 
-/* SEARCH */
 .search {
   flex: 1;
-  margin: 0 10px;
 }
 
 .search input {
   width: 100%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 12px;
-  color: var(--text);
-  outline: none;
-}
-
-/* TOGGLE */
-.toggle {
-  cursor: pointer;
-  border: 1px solid var(--border);
-  padding: 6px 10px;
+  padding: 8px;
   border-radius: 8px;
-}
-
-/* ===== CATEGORY SCROLL ===== */
-.categories {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.categories::-webkit-scrollbar {
-  display: none;
-}
-
-.cat {
-  white-space: nowrap;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.cat:hover {
-  border-color: var(--accent);
+  border: none;
+  background: #111;
+  color: white;
 }
 
 /* ===== GRID ===== */
@@ -128,44 +71,22 @@ body {
 
 /* ITEM */
 .item {
-  position: relative;
   margin-bottom: 10px;
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
 }
 
-/* IMAGE */
 .item img {
   width: 100%;
   display: block;
-  border-radius: 12px;
 }
 
-/* OVERLAY */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  opacity: 0;
-  transition: 0.25s ease;
-}
-
-.item:hover .overlay {
-  opacity: 1;
-}
-
-/* BUTTON */
-.btn {
-  background: white;
-  color: black;
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 6px;
+/* LOADER */
+.loader {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
 }
 
 </style>
@@ -175,62 +96,83 @@ body {
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="logo">Midnight Eco</div>
-
+  <div class="logo">Midnight</div>
   <div class="search">
-    <input type="text" placeholder="Search wallpapers...">
+    <input type="text" placeholder="Search wallpapers..." id="searchInput">
   </div>
-
-  <div class="toggle" id="toggle">🌓</div>
-</div>
-
-<!-- CATEGORIES -->
-<div class="categories">
-  <div class="cat">All</div>
-  <div class="cat">AMOLED</div>
-  <div class="cat">Anime</div>
-  <div class="cat">Cars</div>
-  <div class="cat">Dark</div>
-  <div class="cat">Minimal</div>
 </div>
 
 <!-- GRID -->
-<div class="grid">
+<div class="grid" id="grid"></div>
 
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/20250412_210014-COLLAGE.jpg">
-    <div class="overlay">
-      <div class="btn">Download</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/1000038072.webp">
-    <div class="overlay">
-      <div class="btn">Download</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/photo-collage.png%20(1).webp">
-    <div class="overlay">
-      <div class="btn">Download</div>
-    </div>
-  </div>
-
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/Car%20pack%201.webp">
-    <div class="overlay">
-      <div class="btn">Download</div>
-    </div>
-  </div>
-
-</div>
+<div class="loader" id="loader">Loading...</div>
 
 <script>
-document.getElementById("toggle").onclick = () => {
-  document.body.classList.toggle("light");
+
+const API = "https://opensheet.elk.sh/YOUR_SHEET_ID/Sheet1";
+
+let allData = [];
+let visible = 0;
+const LIMIT = 20;
+
+async function fetchData() {
+  const res = await fetch(API);
+  const data = await res.json();
+
+  allData = data;
+  render();
 }
+
+function render() {
+  const grid = document.getElementById("grid");
+
+  const slice = allData.slice(visible, visible + LIMIT);
+
+  slice.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `
+      <a href="wallpaper.html?id=${item.id}">
+        <img src="${item.image}" loading="lazy">
+      </a>
+    `;
+
+    grid.appendChild(div);
+  });
+
+  visible += LIMIT;
+
+  if (visible >= allData.length) {
+    document.getElementById("loader").innerText = "No more wallpapers";
+  }
+}
+
+/* INFINITE SCROLL */
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+    render();
+  }
+});
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input", e => {
+  const value = e.target.value.toLowerCase();
+
+  document.getElementById("grid").innerHTML = "";
+
+  const filtered = allData.filter(item =>
+    item.tags.toLowerCase().includes(value) ||
+    item.title.toLowerCase().includes(value)
+  );
+
+  allData = filtered;
+  visible = 0;
+  render();
+});
+
+fetchData();
+
 </script>
 
 </body>
