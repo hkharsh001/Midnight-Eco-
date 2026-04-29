@@ -4,28 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Midnight Eco — Wallpapers</title>
+<title>Midnight Eco — Explore</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== ROOT THEME ===== */
+/* ===== THEME ===== */
 :root {
   --bg: #0A0A0A;
-  --card: #111111;
-  --border: #1F1F1F;
-  --text: #FFFFFF;
-  --text-secondary: #A1A1AA;
-  --accent: #3B82F6;
+  --card: #111;
+  --text: #fff;
+  --muted: #a1a1aa;
+  --border: #1f1f1f;
+  --accent: #3b82f6;
 }
 
 .light {
-  --bg: #FFFFFF;
-  --card: #F8F9FA;
-  --border: #E5E7EB;
-  --text: #111827;
-  --text-secondary: #6B7280;
+  --bg: #ffffff;
+  --card: #f8f9fa;
+  --text: #111;
+  --muted: #6b7280;
+  --border: #e5e7eb;
 }
 
 /* RESET */
@@ -40,38 +40,43 @@ body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
-  transition: 0.3s;
 }
 
-/* ===== NAVBAR ===== */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
+/* ===== TOP BAR ===== */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
 }
 
-.nav-links {
-  display: flex;
-  gap: 20px;
+/* SEARCH */
+.search {
+  flex: 1;
+  margin: 0 10px;
 }
 
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.nav-links a:hover {
+.search input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
   color: var(--text);
+  outline: none;
 }
 
+/* TOGGLE */
 .toggle {
   cursor: pointer;
   border: 1px solid var(--border);
@@ -79,99 +84,88 @@ body {
   border-radius: 8px;
 }
 
-/* ===== HERO ===== */
-.hero {
-  text-align: center;
-  padding: 60px 20px 30px;
+/* ===== CATEGORY SCROLL ===== */
+.categories {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
-.hero h1 {
-  font-size: 32px;
-  font-weight: 600;
+.categories::-webkit-scrollbar {
+  display: none;
 }
 
-.hero p {
-  color: var(--text-secondary);
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* ===== GRID ===== */
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-}
-
-/* ===== CARD ===== */
-.card {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--border);
+.cat {
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 999px;
   background: var(--card);
-  transition: 0.25s ease;
-  text-decoration: none;
-  color: var(--text);
-}
-
-.card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.card span {
-  display: block;
-  padding: 8px;
+  border: 1px solid var(--border);
   font-size: 13px;
-  color: var(--text-secondary);
+  cursor: pointer;
 }
 
-/* HOVER */
-.card:hover {
-  transform: scale(1.03);
+.cat:hover {
   border-color: var(--accent);
 }
 
-.card::after {
-  content: "Download";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: 0.25s;
-  font-size: 14px;
+/* ===== GRID ===== */
+.grid {
+  column-count: 2;
+  column-gap: 10px;
+  padding: 10px;
 }
 
-.card:hover::after {
+@media(min-width:600px){
+  .grid { column-count: 3; }
+}
+
+@media(min-width:1000px){
+  .grid { column-count: 4; }
+}
+
+/* ITEM */
+.item {
+  position: relative;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* IMAGE */
+.item img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+/* OVERLAY */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  transition: 0.25s ease;
+}
+
+.item:hover .overlay {
   opacity: 1;
 }
 
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  padding: 30px 10px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-}
-
-/* MOBILE */
-@media(max-width:600px){
-  .hero h1 {
-    font-size: 24px;
-  }
+/* BUTTON */
+.btn {
+  background: white;
+  color: black;
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
 }
 
 </style>
@@ -179,56 +173,59 @@ footer {
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
+<!-- TOPBAR -->
+<div class="topbar">
   <div class="logo">Midnight Eco</div>
 
-  <div class="nav-links">
-    <a href="#">Home</a>
-    <a href="#">Collections</a>
-    <a href="#">Contact</a>
+  <div class="search">
+    <input type="text" placeholder="Search wallpapers...">
   </div>
 
   <div class="toggle" id="toggle">🌓</div>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Curated Wallpapers. No Noise.</h1>
-  <p>4K • AMOLED • Minimal • Daily Drops</p>
+<!-- CATEGORIES -->
+<div class="categories">
+  <div class="cat">All</div>
+  <div class="cat">AMOLED</div>
+  <div class="cat">Anime</div>
+  <div class="cat">Cars</div>
+  <div class="cat">Dark</div>
+  <div class="cat">Minimal</div>
 </div>
 
 <!-- GRID -->
-<div class="container">
-  <div class="grid">
+<div class="grid">
 
-    <a href="#" class="card">
-      <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/20250412_210014-COLLAGE.jpg">
-      <span>Spiderman Pack</span>
-    </a>
-
-    <a href="#" class="card">
-      <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/1000038072.webp">
-      <span>Predator Pack</span>
-    </a>
-
-    <a href="#" class="card">
-      <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/photo-collage.png%20(1).webp">
-      <span>Batman Pack</span>
-    </a>
-
-    <a href="#" class="card">
-      <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/Car%20pack%201.webp">
-      <span>Car Pack</span>
-    </a>
-
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/20250412_210014-COLLAGE.jpg">
+    <div class="overlay">
+      <div class="btn">Download</div>
+    </div>
   </div>
-</div>
 
-<!-- FOOTER -->
-<footer>
-  © 2026 Midnight Eco • Privacy • Contact
-</footer>
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/1000038072.webp">
+    <div class="overlay">
+      <div class="btn">Download</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/photo-collage.png%20(1).webp">
+    <div class="overlay">
+      <div class="btn">Download</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/hkharsh001/Midnight-Eco-/refs/heads/main/Car%20pack%201.webp">
+    <div class="overlay">
+      <div class="btn">Download</div>
+    </div>
+  </div>
+
+</div>
 
 <script>
 document.getElementById("toggle").onclick = () => {
