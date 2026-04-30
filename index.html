@@ -1,95 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Midnight — Explore Wallpapers</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Midnight — Wallpapers</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-
-/* ===== THEME ===== */
-:root {
-  --bg: #0A0A0A;
-  --text: #fff;
-  --muted: #a1a1aa;
-  --border: #1f1f1f;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-
-/* ===== TOP BAR ===== */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo {
-  font-weight: 600;
-}
-
-.search {
-  flex: 1;
-}
-
-.search input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  background: #111;
-  color: white;
-}
-
-/* ===== GRID ===== */
-.grid {
-  column-count: 2;
-  column-gap: 10px;
-  padding: 10px;
-}
-
-@media(min-width:600px){
-  .grid { column-count: 3; }
-}
-
-@media(min-width:1000px){
-  .grid { column-count: 4; }
-}
-
-/* ITEM */
-.item {
-  margin-bottom: 10px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.item img {
-  width: 100%;
-  display: block;
-}
-
-/* LOADER */
-.loader {
-  text-align: center;
-  padding: 20px;
-  color: var(--muted);
-}
-
-</style>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -97,8 +14,9 @@ body {
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">Midnight</div>
+
   <div class="search">
-    <input type="text" placeholder="Search wallpapers..." id="searchInput">
+    <input type="text" id="searchInput" placeholder="Search wallpapers...">
   </div>
 </div>
 
@@ -107,73 +25,7 @@ body {
 
 <div class="loader" id="loader">Loading...</div>
 
-<script>
-
-const API = "https://opensheet.elk.sh/YOUR_SHEET_ID/Sheet1";
-
-let allData = [];
-let visible = 0;
-const LIMIT = 20;
-
-async function fetchData() {
-  const res = await fetch(API);
-  const data = await res.json();
-
-  allData = data;
-  render();
-}
-
-function render() {
-  const grid = document.getElementById("grid");
-
-  const slice = allData.slice(visible, visible + LIMIT);
-
-  slice.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item";
-
-    div.innerHTML = `
-      <a href="wallpaper.html?id=${item.id}">
-        <img src="${item.image}" loading="lazy">
-      </a>
-    `;
-
-    grid.appendChild(div);
-  });
-
-  visible += LIMIT;
-
-  if (visible >= allData.length) {
-    document.getElementById("loader").innerText = "No more wallpapers";
-  }
-}
-
-/* INFINITE SCROLL */
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-    render();
-  }
-});
-
-/* SEARCH */
-document.getElementById("searchInput").addEventListener("input", e => {
-  const value = e.target.value.toLowerCase();
-
-  document.getElementById("grid").innerHTML = "";
-
-  const filtered = allData.filter(item =>
-    item.tags.toLowerCase().includes(value) ||
-    item.title.toLowerCase().includes(value)
-  );
-
-  allData = filtered;
-  visible = 0;
-  render();
-});
-
-fetchData();
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
