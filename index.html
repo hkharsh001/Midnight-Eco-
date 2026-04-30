@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MidnightEco</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MidnightEco</title>
 
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- ICONS (Lucide - clean icons) -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
 
 <!-- 🔝 TOPBAR -->
 <header class="topbar">
-  <div class="logo">
+
+  <div class="logo" id="logo">
     <span class="moon"></span>
     MidnightEco
   </div>
 
-  <div class="top-icons">
-    <i data-lucide="search"></i>
+  <!-- SEARCH BOX -->
+  <div class="search-box" id="searchBox">
+    <input type="text" placeholder="Search wallpapers...">
+    <i data-lucide="x" id="closeSearch"></i>
+  </div>
+
+  <div class="top-icons" id="icons">
+    <i data-lucide="search" id="openSearch"></i>
     <i data-lucide="bell"></i>
     <i data-lucide="more-vertical"></i>
   </div>
+
 </header>
 
 <!-- 🧭 CATEGORY -->
@@ -60,7 +67,6 @@
 
 <script src="script.js"></script>
 
-<!-- INIT ICONS -->
 <script>
   lucide.createIcons();
 </script>
