@@ -1,253 +1,138 @@
-/* =========================
-   GLOBAL STATE
-========================= */
-const API = "data.json";
-let allData = [];
-let saved = JSON.parse(localStorage.getItem("saved")) || [];
+const API="data.json";
+let allData=[],saved=JSON.parse(localStorage.getItem("saved"))||[];
 
-/* =========================
-   HELPERS
-========================= */
-function qs(sel) { return document.querySelector(sel); }
-function qsa(sel) { return document.querySelectorAll(sel); }
+function qs(s){return document.querySelector(s)}
+function qsa(s){return document.querySelectorAll(s)}
 
-function saveToStorage() {
-  localStorage.setItem("saved", JSON.stringify(saved));
+async function load(){
+  const res=await fetch(API);
+  allData=await res.json();
+  route();
+}
+load();
+
+/* router */
+function route(){
+  if(qs("#grid")) initHome();
+  if(qs("#mainImage")) initWallpaper();
+  if(qs("#savedGrid")) initSaved();
 }
 
-function toggleSave(id) {
-  if (saved.includes(id)) {
-    saved = saved.filter(x => x !== id);
-  } else {
-    saved.push(id);
-  }
-  saveToStorage();
-  updateSaveButtons();
-}
+/* HOME */
+let visible=0,limit=12,current=[];
 
-function updateSaveButtons() {
-  qsa(".save-btn").forEach(btn => {
-    const id = btn.dataset.id;
-    if (saved.includes(id)) {
-      btn.classList.add("active");
-      btn.innerText = "💜";
-    } else {
-      btn.classList.remove("active");
-      btn.innerText = "🤍";
-    }
-  });
-}
+function initHome(){
+  startFeed(allData);
 
-/* =========================
-   FETCH DATA
-========================= */
-async function loadData() {
-  try {
-    const res = await fetch(API);
-    allData = await res.json();
-
-    initPage(); // route logic
-
-  } catch (err) {
-    console.error("DATA ERROR:", err);
-  }
-}
-
-/* =========================
-   ROUTER (AUTO PAGE DETECT)
-========================= */
-function initPage() {
-  if (qs("#grid")) initHome();
-  if (qs("#mainImage")) initWallpaper();
-  if (qs("#savedGrid")) initSaved();
-}
-
-/* =========================
-   HOME PAGE
-========================= */
-function initHome() {
-  renderGrid(allData);
-
-  // CATEGORY FILTER
-  qsa(".cat").forEach(cat => {
-    cat.addEventListener("click", () => {
+  qsa(".cat").forEach(c=>{
+    c.onclick=()=>{
       qs(".cat.active")?.classList.remove("active");
-      cat.classList.add("active");
-
-      const value = cat.innerText.toLowerCase();
-
-      if (value === "all") {
-        renderGrid(allData);
-      } else {
-        const filtered = allData.filter(item =>
-          item.tags && item.tags.toLowerCase().includes(value)
-        );
-        renderGrid(filtered);
-      }
-    });
+      c.classList.add("active");
+      const v=c.innerText.toLowerCase();
+      const f=v==="all"?allData:allData.filter(x=>x.tags?.includes(v));
+      startFeed(f);
+    };
   });
 
-  // SEARCH
-  const input = qs(".search-box input");
-  input?.addEventListener("input", (e) => {
-    const value = e.target.value.toLowerCase();
-
-    const filtered = allData.filter(item =>
-      item.tags && item.tags.toLowerCase().includes(value)
-    );
-
-    renderGrid(filtered);
+  const input=qs(".search-box input");
+  let t;
+  input?.addEventListener("input",e=>{
+    clearTimeout(t);
+    t=setTimeout(()=>{
+      const v=e.target.value.toLowerCase();
+      startFeed(allData.filter(x=>x.tags?.includes(v)));
+    },150);
   });
 }
 
-/* =========================
-   GRID RENDER
-========================= */
-function renderGrid(data) {
-  const grid = qs("#grid");
-  if (!grid) return;
+function startFeed(data){
+  const g=qs("#grid"); if(!g)return;
+  g.innerHTML=""; current=data; visible=0;
+  next();
+}
 
-  grid.innerHTML = "";
-
-  data.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item";
-
-    div.innerHTML = `
+function next(){
+  const g=qs("#grid"); if(!g)return;
+  current.slice(visible,visible+limit).forEach(item=>{
+    const d=document.createElement("div"); d.className="item";
+    d.innerHTML=`
       <a href="wallpaper.html?id=${item.id}">
         <img src="${item.image}" loading="lazy">
       </a>
-      <button class="save-btn" data-id="${item.id}">🤍</button>
-    `;
-
-    grid.appendChild(div);
+      <button class="save-btn" data-id="${item.id}">🤍</button>`;
+    g.appendChild(d);
   });
-
-  updateSaveButtons();
+  visible+=limit; updateSave();
 }
 
-/* =========================
-   WALLPAPER PAGE
-========================= */
-function initWallpaper() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+window.onscroll=()=>{
+  if(innerHeight+scrollY>=document.body.offsetHeight-200) next();
+};
 
-  const item = allData.find(w => w.id === id) || allData[0];
+/* WALLPAPER */
+function initWallpaper(){
+  const id=new URLSearchParams(location.search).get("id");
+  const item=allData.find(x=>x.id===id)||allData[0];
 
-  // IMAGE
-  qs("#mainImage").src = item.image;
+  qs("#mainImage").src=item.image;
+  qs("#mobileBtn").href=item.mobile||item.image;
+  qs("#desktopBtn").href=item.desktop||item.image;
 
-  // DOWNLOAD
-  qs("#mobileBtn").href = item.mobile || item.image;
-  qs("#desktopBtn").href = item.desktop || item.image;
+  const tag=qs("#tags"); tag.innerHTML="";
+  item.tags?.split(",").forEach(t=>{
+    const s=document.createElement("span"); s.innerText=t; tag.appendChild(s);
+  });
 
-  // TAGS
-  const tagBox = qs("#tags");
-  tagBox.innerHTML = "";
+  const rel=allData.filter(w=>w.id!==item.id &&
+    w.tags?.split(",").some(t=>item.tags?.includes(t)));
+  const show=rel.length?rel:allData.slice(0,6);
 
-  if (item.tags) {
-    item.tags.split(",").forEach(tag => {
-      const el = document.createElement("span");
-      el.innerText = tag;
-      tagBox.appendChild(el);
-    });
-  }
-
-  // RELATED
-  const relatedGrid = qs("#relatedGrid");
-  relatedGrid.innerHTML = "";
-
-  allData.forEach(w => {
-    if (w.id !== item.id) {
-      const div = document.createElement("div");
-      div.className = "item";
-
-      div.innerHTML = `
-        <a href="wallpaper.html?id=${w.id}">
-          <img src="${w.image}" loading="lazy">
-        </a>
-      `;
-
-      relatedGrid.appendChild(div);
-    }
+  const grid=qs("#relatedGrid"); grid.innerHTML="";
+  show.forEach(w=>{
+    const d=document.createElement("div"); d.className="item";
+    d.innerHTML=`<a href="wallpaper.html?id=${w.id}">
+      <img src="${w.image}">
+    </a>`;
+    grid.appendChild(d);
   });
 }
 
-/* =========================
-   SAVED PAGE
-========================= */
-function initSaved() {
-  const grid = qs("#savedGrid");
-  grid.innerHTML = "";
-
-  const filtered = allData.filter(item => saved.includes(item.id));
-
-  filtered.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item";
-
-    div.innerHTML = `
-      <a href="wallpaper.html?id=${item.id}">
-        <img src="${item.image}">
-      </a>
-    `;
-
-    grid.appendChild(div);
+/* SAVED */
+function initSaved(){
+  const g=qs("#savedGrid"); g.innerHTML="";
+  allData.filter(x=>saved.includes(x.id)).forEach(item=>{
+    const d=document.createElement("div"); d.className="item";
+    d.innerHTML=`<a href="wallpaper.html?id=${item.id}">
+      <img src="${item.image}">
+    </a>`;
+    g.appendChild(d);
   });
 }
 
-/* =========================
-   SAVE CLICK GLOBAL
-========================= */
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("save-btn")) {
-    toggleSave(e.target.dataset.id);
+/* SAVE */
+document.addEventListener("click",e=>{
+  if(e.target.classList.contains("save-btn")){
+    const id=e.target.dataset.id;
+    saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];
+    localStorage.setItem("saved",JSON.stringify(saved));
+    updateSave();
   }
 });
 
-/* =========================
-   NAV ACTIVE STATE
-========================= */
-qsa(".bottom-nav i").forEach(icon => {
-  icon.addEventListener("click", () => {
-    qs(".bottom-nav .active")?.classList.remove("active");
-    icon.classList.add("active");
+function updateSave(){
+  qsa(".save-btn").forEach(b=>{
+    b.classList.toggle("active",saved.includes(b.dataset.id));
   });
-});
+}
 
-/* =========================
-   SEARCH TOGGLE
-========================= */
-const openSearch = qs("#openSearch");
-const closeSearch = qs("#closeSearch");
-
-const searchBox = qs("#searchBox");
-const logo = qs("#logo");
-const icons = qs("#icons");
-
-openSearch?.addEventListener("click", () => {
-  searchBox.classList.add("active");
-  logo.classList.add("hide");
-  icons.classList.add("hide");
-});
-
-closeSearch?.addEventListener("click", () => {
-  searchBox.classList.remove("active");
-  logo.classList.remove("hide");
-  icons.classList.remove("hide");
-});
-
-/* ESC CLOSE */
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    searchBox?.classList.remove("active");
-    logo?.classList.remove("hide");
-    icons?.classList.remove("hide");
-  }
-});
-
-/* =========================
-   INIT
-========================= */
-loadData();
+/* SEARCH TOGGLE */
+qs("#openSearch")?.onclick=()=>{
+  qs("#searchBox").classList.add("active");
+  qs("#logo")?.classList.add("hide");
+  qs("#icons")?.classList.add("hide");
+};
+qs("#closeSearch")?.onclick=()=>{
+  qs("#searchBox").classList.remove("active");
+  qs("#logo")?.classList.remove("hide");
+  qs("#icons")?.classList.remove("hide");
+};
