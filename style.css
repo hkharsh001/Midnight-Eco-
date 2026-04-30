@@ -206,3 +206,18 @@ nav a:hover, nav a.active {
     cursor: pointer;
     font-weight: 600;
 }
+/* Loading Indicator */
+.loader {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+}
+
+.loader.hidden {
+    display: none;
+    opacity: 0;
+}
