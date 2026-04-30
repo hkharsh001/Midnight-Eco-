@@ -8,20 +8,13 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-
 </head>
 
 <body>
 
-<!-- 🔝 TOPBAR -->
 <header class="topbar">
+  <div class="logo" id="logo">🌙 MidnightEco</div>
 
-  <div class="logo" id="logo">
-    <span class="moon"></span>
-    MidnightEco
-  </div>
-
-  <!-- SEARCH BOX -->
   <div class="search-box" id="searchBox">
     <input type="text" placeholder="Search wallpapers...">
     <i data-lucide="x" id="closeSearch"></i>
@@ -32,44 +25,27 @@
     <i data-lucide="bell"></i>
     <i data-lucide="more-vertical"></i>
   </div>
-
 </header>
 
-<!-- 🧭 CATEGORY -->
 <section class="categories">
   <div class="cat active">All</div>
   <div class="cat">Trending</div>
   <div class="cat">AMOLED</div>
-  <div class="cat">Anime</div>
-  <div class="cat">Cars</div>
-  <div class="cat">Dark</div>
 </section>
 
-<!-- 🔥 HERO -->
-<section class="hero">
-  <h2>Explore Wallpapers</h2>
-  <p>Mobile • Desktop • 4K</p>
-</section>
-
-<!-- 🖼️ GRID -->
 <main>
   <div class="grid" id="grid"></div>
 </main>
 
-<!-- 📱 BOTTOM NAV -->
 <nav class="bottom-nav">
-  <i data-lucide="home" class="active"></i>
-  <i data-lucide="compass"></i>
-  <i data-lucide="heart"></i>
-  <i data-lucide="bookmark"></i>
-  <i data-lucide="user"></i>
+  <a href="index.html"><i data-lucide="home" class="active"></i></a>
+  <a href="explore.html"><i data-lucide="compass"></i></a>
+  <a href="saved.html"><i data-lucide="heart"></i></a>
+  <a href="profile.html"><i data-lucide="user"></i></a>
 </nav>
 
 <script src="script.js"></script>
-
-<script>
-  lucide.createIcons();
-</script>
+<script>lucide.createIcons();</script>
 
 </body>
 </html>
