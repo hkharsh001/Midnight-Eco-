@@ -1,64 +1,40 @@
-// ===== CATEGORY ACTIVE SWITCH =====
-const categories = document.querySelectorAll(".cat");
+const grid = document.getElementById("grid");
 
-categories.forEach(cat => {
+const wallpapers = [
+  "https://picsum.photos/400/600?1",
+  "https://picsum.photos/400/500?2",
+  "https://picsum.photos/400/700?3",
+  "https://picsum.photos/400/550?4",
+  "https://picsum.photos/400/650?5",
+  "https://picsum.photos/400/520?6",
+  "https://picsum.photos/400/620?7",
+  "https://picsum.photos/400/580?8"
+];
+
+function loadWallpapers() {
+  wallpapers.forEach(src => {
+    const div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `<img src="${src}">`;
+    grid.appendChild(div);
+  });
+}
+
+loadWallpapers();
+
+/* ACTIVE CATEGORY */
+document.querySelectorAll(".cat").forEach(cat => {
   cat.addEventListener("click", () => {
-    document.querySelector(".cat.active")?.classList.remove("active");
+    document.querySelector(".cat.active").classList.remove("active");
     cat.classList.add("active");
   });
 });
 
-
-// ===== BOTTOM NAV ACTIVE =====
-const navItems = document.querySelectorAll(".bottom-nav button");
-
-navItems.forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelector(".bottom-nav .active")?.classList.remove("active");
-    btn.classList.add("active");
-  });
-});
-
-
-// ===== SCROLL TO TOP BUTTON (if added later) =====
-const scrollBtn = document.querySelector(".fab");
-
-if (scrollBtn) {
-  scrollBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-
-
-// ===== SIMPLE SEARCH FILTER (STATIC VERSION) =====
-const searchInput = document.querySelector(".search input");
-const items = document.querySelectorAll(".item");
-
-if (searchInput) {
-  searchInput.addEventListener("input", (e) => {
-    const value = e.target.value.toLowerCase();
-
-    items.forEach(item => {
-      const alt = item.innerText.toLowerCase();
-
-      if (alt.includes(value)) {
-        item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
-    });
-  });
-}
-
-
-// ===== ITEM CLICK (PREP FOR NEXT PAGE) =====
-const wallpaperItems = document.querySelectorAll(".item");
-
-wallpaperItems.forEach((item, index) => {
-  item.addEventListener("click", () => {
-    console.log("Clicked wallpaper:", index);
-
-    // future:
-    // window.location.href = `wallpaper.html?id=${index}`;
+/* BOTTOM NAV ACTIVE */
+document.querySelectorAll(".bottom-nav i").forEach(icon => {
+  icon.addEventListener("click", () => {
+    document.querySelector(".bottom-nav .active").classList.remove("active");
+    icon.classList.add("active");
   });
 });
