@@ -1,4 +1,4 @@
-const API = "https://docs.google.com/spreadsheets/d/1tEHA0c0PehL8hdgkoF01VJ3mqNuL6E6nux8ETjdEtKI/edit?usp=drivesdk";
+const API = "https://opensheet.elk.sh/1tEHA0c0PehL8hdgkoF01VJ3mqNuL6E6nux8ETjdEtKI/1";
 
 let allData = [];
 let visible = 0;
@@ -11,11 +11,16 @@ async function fetchData() {
 
     console.log("DATA:", data);
 
+    if (!data.length) {
+      document.getElementById("loader").innerText = "No data found";
+      return;
+    }
+
     allData = data;
     render();
   } catch (err) {
     console.error(err);
-    document.getElementById("loader").innerText = "Failed to load data";
+    document.getElementById("loader").innerText = "Error loading data";
   }
 }
 
@@ -29,7 +34,7 @@ function render() {
     div.className = "item";
 
     div.innerHTML = `
-      <a href="wallpaper.html?id=${item.id}">
+      <a href="#">
         <img src="${item.image}" loading="lazy">
       </a>
     `;
@@ -44,14 +49,12 @@ function render() {
   }
 }
 
-/* INFINITE SCROLL */
 window.addEventListener("scroll", () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
     render();
   }
 });
 
-/* SEARCH */
 document.getElementById("searchInput").addEventListener("input", e => {
   const value = e.target.value.toLowerCase();
 
