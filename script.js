@@ -1,3 +1,4 @@
+// ===== LOAD WALLPAPERS =====
 const grid = document.getElementById("grid");
 
 const wallpapers = [
@@ -11,23 +12,18 @@ const wallpapers = [
   "https://picsum.photos/400/580?8"
 ];
 
-function loadWallpapers() {
-  wallpapers.forEach((src, index) => {
-    const div = document.createElement("div");
-    div.className = "item";
+wallpapers.forEach((src, index) => {
+  const div = document.createElement("div");
+  div.className = "item";
 
-    // 🔥 IMPORTANT CHANGE (LINK ADDED)
-    div.innerHTML = `
-      <a href="wallpaper.html?id=${index + 1}">
-        <img src="${src}">
-      </a>
-    `;
+  div.innerHTML = `
+    <a href="wallpaper.html?id=${index + 1}">
+      <img src="${src}">
+    </a>
+  `;
 
-    grid.appendChild(div);
-  });
-}
-
-loadWallpapers();
+  grid.appendChild(div);
+});
 
 
 // ===== CATEGORY ACTIVE =====
@@ -46,3 +42,38 @@ document.querySelectorAll(".bottom-nav i").forEach(icon => {
     icon.classList.add("active");
   });
 });
+
+
+// ===== SEARCH TOGGLE =====
+const openSearch = document.getElementById("openSearch");
+const closeSearch = document.getElementById("closeSearch");
+
+const searchBox = document.getElementById("searchBox");
+const logo = document.getElementById("logo");
+const icons = document.getElementById("icons");
+
+openSearch.addEventListener("click", () => {
+  searchBox.classList.add("active");
+  logo.classList.add("hide");
+  icons.classList.add("hide");
+});
+
+closeSearch.addEventListener("click", () => {
+  searchBox.classList.remove("active");
+  logo.classList.remove("hide");
+  icons.classList.remove("hide");
+});
+
+
+// ===== OPTIONAL: CLOSE SEARCH ON ESC =====
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    searchBox.classList.remove("active");
+    logo.classList.remove("hide");
+    icons.classList.remove("hide");
+  }
+});
+
+
+// ===== RE-INIT ICONS (IMPORTANT) =====
+lucide.createIcons();
