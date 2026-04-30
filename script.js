@@ -1,29 +1,35 @@
-// ===== LOAD WALLPAPERS =====
 const grid = document.getElementById("grid");
 
-const wallpapers = [
-  "https://picsum.photos/400/600?1",
-  "https://picsum.photos/400/500?2",
-  "https://picsum.photos/400/700?3",
-  "https://picsum.photos/400/550?4",
-  "https://picsum.photos/400/650?5",
-  "https://picsum.photos/400/520?6",
-  "https://picsum.photos/400/620?7",
-  "https://picsum.photos/400/580?8"
-];
+const API = "data.json";
 
-wallpapers.forEach((src, index) => {
-  const div = document.createElement("div");
-  div.className = "item";
+async function loadWallpapers() {
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
 
-  div.innerHTML = `
-    <a href="wallpaper.html?id=${index + 1}">
-      <img src="${src}">
-    </a>
-  `;
+    grid.innerHTML = "";
 
-  grid.appendChild(div);
-});
+    data.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "item";
+
+      div.innerHTML = `
+        <a href="wallpaper.html?id=${item.id}">
+          <img src="${item.image}" loading="lazy">
+        </a>
+      `;
+
+      grid.appendChild(div);
+    });
+
+    lucide.createIcons();
+
+  } catch (err) {
+    console.error("Error loading data:", err);
+  }
+}
+
+loadWallpapers();
 
 
 // ===== CATEGORY ACTIVE =====
@@ -52,20 +58,20 @@ const searchBox = document.getElementById("searchBox");
 const logo = document.getElementById("logo");
 const icons = document.getElementById("icons");
 
-openSearch.addEventListener("click", () => {
+openSearch?.addEventListener("click", () => {
   searchBox.classList.add("active");
   logo.classList.add("hide");
   icons.classList.add("hide");
 });
 
-closeSearch.addEventListener("click", () => {
+closeSearch?.addEventListener("click", () => {
   searchBox.classList.remove("active");
   logo.classList.remove("hide");
   icons.classList.remove("hide");
 });
 
 
-// ===== OPTIONAL: CLOSE SEARCH ON ESC =====
+// ===== ESC CLOSE SEARCH =====
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     searchBox.classList.remove("active");
@@ -73,7 +79,3 @@ document.addEventListener("keydown", (e) => {
     icons.classList.remove("hide");
   }
 });
-
-
-// ===== RE-INIT ICONS (IMPORTANT) =====
-lucide.createIcons();
