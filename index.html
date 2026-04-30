@@ -1,54 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MidnightEco</title>
-
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnighteco | Explore</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
+    <header class="navbar">
+        <div class="logo">Midnighteco</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Explore</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">Collections</a></li>
+            </ul>
+        </nav>
+        <button class="upload-btn">Submit Art</button>
+    </header>
 
-<header class="topbar">
-  <div class="logo" id="logo">
-    <span class="moon"></span> MidnightEco
-  </div>
+    <main>
+        <section class="hero">
+            <h1>Discover your next aesthetic.</h1>
+            <p>High-resolution cinematic wallpapers for every screen.</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for anime, cinematic, sci-fi..." id="searchInput">
+                <button id="searchBtn">Search</button>
+            </div>
+            <div class="trending-tags">
+                <span>Trending:</span>
+                <a href="#">Makoto Shinkai</a>
+                <a href="#">Stranger Things</a>
+                <a href="#">Minimalist</a>
+                <a href="#">Synthwave</a>
+            </div>
+        </section>
 
-  <div class="search-box" id="searchBox">
-    <input type="text" placeholder="Search wallpapers...">
-    <i data-lucide="x" id="closeSearch"></i>
-  </div>
+        <section class="gallery-container">
+            <div class="masonry-grid" id="gallery">
+                </div>
+        </section>
+    </main>
 
-  <div class="top-icons" id="icons">
-    <i data-lucide="search" id="openSearch"></i>
-    <i data-lucide="bell"></i>
-    <i data-lucide="more-vertical"></i>
-  </div>
-</header>
-
-<section class="categories">
-  <div class="cat active">All</div>
-  <div class="cat">Trending</div>
-  <div class="cat">Dark</div>
-  <div class="cat">Anime</div>
-  <div class="cat">Cars</div>
-</section>
-
-<main>
-  <div class="grid" id="grid"></div>
-</main>
-
-<nav class="bottom-nav">
-  <a href="index.html"><i data-lucide="home" class="active"></i></a>
-  <a href="explore.html"><i data-lucide="compass"></i></a>
-  <a href="saved.html"><i data-lucide="heart"></i></a>
-  <a href="profile.html"><i data-lucide="user"></i></a>
-</nav>
-
-<script src="app.js"></script>
-<script>lucide.createIcons();</script>
+    <script src="script.js"></script>
 </body>
 </html>
