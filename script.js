@@ -12,29 +12,37 @@ const wallpapers = [
 ];
 
 function loadWallpapers() {
-  wallpapers.forEach(src => {
+  wallpapers.forEach((src, index) => {
     const div = document.createElement("div");
     div.className = "item";
 
-    div.innerHTML = `<img src="${src}">`;
+    // 🔥 IMPORTANT CHANGE (LINK ADDED)
+    div.innerHTML = `
+      <a href="wallpaper.html?id=${index + 1}">
+        <img src="${src}">
+      </a>
+    `;
+
     grid.appendChild(div);
   });
 }
 
 loadWallpapers();
 
-/* ACTIVE CATEGORY */
+
+// ===== CATEGORY ACTIVE =====
 document.querySelectorAll(".cat").forEach(cat => {
   cat.addEventListener("click", () => {
-    document.querySelector(".cat.active").classList.remove("active");
+    document.querySelector(".cat.active")?.classList.remove("active");
     cat.classList.add("active");
   });
 });
 
-/* BOTTOM NAV ACTIVE */
+
+// ===== BOTTOM NAV ACTIVE =====
 document.querySelectorAll(".bottom-nav i").forEach(icon => {
   icon.addEventListener("click", () => {
-    document.querySelector(".bottom-nav .active").classList.remove("active");
+    document.querySelector(".bottom-nav .active")?.classList.remove("active");
     icon.classList.add("active");
   });
 });
